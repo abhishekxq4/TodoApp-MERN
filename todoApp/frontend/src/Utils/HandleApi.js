@@ -1,56 +1,49 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:8090'
+const baseUrl = 'http://localhost:8090';
 
-const getAllTodo = (setTodo) => {
-    axios.get(baseUrl)
-    .then(({data}) => {
-        // console.log(data)
-        setTodo(data)
+const getAllTodo = () => {
+  return axios.get(baseUrl)
+    .then(({ data }) => {
+      return data;
     })
     .catch((error) => {
-        console.log("some error occured while fetching data..", error)
-    })
-    
-}
+      console.log("Some error occurred while fetching data:", error);
+      throw error;
+    });
+};
 
-const addTodo = (text, setText, setTodo) => {
-     
-    axios.post(`${baseUrl}/save`, {text})
-    .then((data) => {
-        // console.log(data)
-        setText("")
-        getAllTodo(setTodo)
+const addTodo = (text) => {
+  return axios.post(`${baseUrl}/save`, { text })
+    .then(({ data }) => {
+      return data;
     })
     .catch((error) => {
-        console.log(error)
-    })
-}
+      console.log("Error adding todo:", error);
+      throw error;
+    });
+};
 
-const updateTodo = (todoId, text, setTodo, setText, setIsUpdating) => {
-     console.log(todoId, text, setIsUpdating)
-    axios.post(`${baseUrl}/update`, {_id: todoId, text})
-    .then((data) => {
-        console.log(data)
-        setText("")
-        setIsUpdating(false)
-        getAllTodo(setTodo)
+const updateTodo = (todoId, text) => {
+  return axios.post(`${baseUrl}/update`, { _id: todoId, text })
+    .then(({ data }) => {
+      return data;
     })
     .catch((error) => {
-        console.log(error)
-    })
-}
+      console.log("Error updating todo:", error);
+      throw error;
+    });
+};
 
-const deleteTodo = (_id, setTodo,) => {
-     
-    axios.post(`${baseUrl}/delete`, {_id})
-    .then((data) => {
-        getAllTodo(setTodo)
+const deleteTodo = (_id) => {
+  return axios.post(`${baseUrl}/delete`, { _id })
+    .then(() => {
+      // No need to return data here
     })
     .catch((error) => {
-        console.log(error)
-    })
-}
+      console.log("Error deleting todo:", error);
+      throw error;
+    });
+};
 
-
-export {getAllTodo, addTodo, updateTodo, deleteTodo};
+export { getAllTodo, addTodo, updateTodo, deleteTodo }
